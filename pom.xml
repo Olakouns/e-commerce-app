@@ -8,8 +8,14 @@
     <artifactId>e-commerce</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
+
+    <name>config-server</name>
+    <description>config-server</description>
+
     <modules>
         <module>product-microservice</module>
+        <module>config-server</module>
+        <module>user-microservice</module>
     </modules>
 
     <properties>
