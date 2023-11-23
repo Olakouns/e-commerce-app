@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -40,13 +42,16 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public Page<ProductDTO> getAllProductsPage(List<Integer> categoryIds, String searchKey, Double minPrice, Double maxPrice, int page, int size) {
-        return null;
+    public Mono<Page<ProductDTO>> getAllProductsPage(List<Integer> categoryIds, String searchKey, Double minPrice, Double maxPrice, int page, int size) {
+        return Mono.fromCallable(() -> productRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.asc("name")))).map(product -> modelMapper.map(product, ProductDTO.class)))
+                .subscribeOn(elasticScheduler);
     }
 
     @Override
-    public List<CategoryDTO> getAllCategories() {
-        return null;
+    public Flux<CategoryDTO> getAllCategories() {
+        return Mono.fromCallable(() -> categoryRepository.findAll().stream().map(category -> modelMapper.map(category, CategoryDTO.class)).collect(Collectors.toList()))
+                .flatMapMany(Flux::fromIterable)
+                .subscribeOn(elasticScheduler);
     }
 
     @Override

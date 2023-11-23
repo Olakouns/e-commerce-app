@@ -13,7 +13,7 @@ public class ApiConfig {
     public RouteLocator customRouteLocator(RouteLocatorBuilder routeLocatorBuilder) {
         return routeLocatorBuilder.routes()
                 .route("product-microservice", r -> r
-                        .path("/api/products-microservice/**")
+                        .path("/api/products-microservice/**", "/api/products/**")
                         .uri("lb://product-microservice"))
                 .route("discovery-server", r -> r
                         .path("/eureka/web")
@@ -22,6 +22,12 @@ public class ApiConfig {
                 .route("discovery-server-static", r -> r
                         .path("/eureka/**")
                         .uri("lb://discovery-server"))
+                .route("user-microservice", r -> r
+                        .path("/api/users-microservice/**", "/api/users/**")
+                        .uri("lb://user-microservice"))
+                .route("auth-server", r -> r
+                        .path("/auth/**")
+                        .uri("lb://auth-server"))
                 .build();
     }
 }

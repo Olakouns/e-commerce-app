@@ -16,6 +16,7 @@
         <module>product-microservice</module>
         <module>config-server</module>
         <module>user-microservice</module>
+        <module>auth-server</module>
     </modules>
 
     <properties>
