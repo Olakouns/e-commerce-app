@@ -1,7 +1,5 @@
-package com.springjwt.filters;
+package sn.esmt.eapplication.authserver.authserver.filters;
 
-import com.springjwt.services.jwt.UserDetailsServiceImpl;
-import com.springjwt.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +11,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import sn.esmt.eapplication.authserver.authserver.services.jwt.UserDetailsServiceImpl;
+import sn.esmt.eapplication.authserver.authserver.util.JwtUtil;
 
 import java.io.IOException;
 

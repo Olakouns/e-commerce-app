@@ -1,12 +1,12 @@
-package com.springjwt.services.jwt;
+package sn.esmt.eapplication.authserver.authserver.services.jwt;
 
-import com.springjwt.entities.User;
-import com.springjwt.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import sn.esmt.eapplication.authserver.authserver.entities.User;
+import sn.esmt.eapplication.authserver.authserver.repositories.UserRepository;
 
 import java.util.ArrayList;
 

@@ -1,12 +1,13 @@
-package com.springjwt.services.auth;
+package sn.esmt.eapplication.authserver.authserver.services.auth;
 
-import com.springjwt.dto.SignupDTO;
-import com.springjwt.dto.UserDTO;
-import com.springjwt.entities.User;
-import com.springjwt.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import sn.esmt.eapplication.authserver.authserver.dto.SignupDTO;
+import sn.esmt.eapplication.authserver.authserver.dto.UserDTO;
+import sn.esmt.eapplication.authserver.authserver.entities.User;
+import sn.esmt.eapplication.authserver.authserver.repositories.UserRepository;
 
 @Service
 public class AuthServiceImpl implements AuthService {

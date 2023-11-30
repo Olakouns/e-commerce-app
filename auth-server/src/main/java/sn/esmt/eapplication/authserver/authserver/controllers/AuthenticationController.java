@@ -1,9 +1,6 @@
-package com.springjwt.controllers;
+package sn.esmt.eapplication.authserver.authserver.controllers;
 
-import com.springjwt.dto.AuthenticationDTO;
-import com.springjwt.dto.AuthenticationResponse;
-import com.springjwt.services.jwt.UserDetailsServiceImpl;
-import com.springjwt.util.JwtUtil;
+
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,11 +11,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import sn.esmt.eapplication.authserver.authserver.dto.AuthenticationDTO;
+import sn.esmt.eapplication.authserver.authserver.dto.AuthenticationResponse;
+import sn.esmt.eapplication.authserver.authserver.services.jwt.UserDetailsServiceImpl;
+import sn.esmt.eapplication.authserver.authserver.util.JwtUtil;
 
 import java.io.IOException;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthenticationController {
 
     @Autowired
@@ -30,7 +33,7 @@ public class AuthenticationController {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    @PostMapping("/authenticate")
+    @PostMapping("/login")
     public AuthenticationResponse createAuthenticationToken(@RequestBody AuthenticationDTO authenticationDTO, HttpServletResponse response) throws BadCredentialsException, DisabledException, UsernameNotFoundException, IOException {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationDTO.getEmail(), authenticationDTO.getPassword()));

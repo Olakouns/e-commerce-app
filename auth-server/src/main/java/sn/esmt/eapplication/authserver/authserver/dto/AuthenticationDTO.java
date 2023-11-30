@@ -1,4 +1,4 @@
-package com.springjwt.dto;
+package sn.esmt.eapplication.authserver.authserver.dto;
 
 import lombok.Data;
 

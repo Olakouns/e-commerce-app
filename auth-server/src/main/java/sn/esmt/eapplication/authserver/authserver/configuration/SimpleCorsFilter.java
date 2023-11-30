@@ -1,4 +1,4 @@
-package com.springjwt.configuration;
+package sn.esmt.eapplication.authserver.authserver.configuration;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
