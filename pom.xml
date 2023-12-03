@@ -17,6 +17,7 @@
         <module>config-server</module>
         <module>user-microservice</module>
         <module>auth-server</module>
+        <module>order-microservice</module>
     </modules>
 
     <properties>

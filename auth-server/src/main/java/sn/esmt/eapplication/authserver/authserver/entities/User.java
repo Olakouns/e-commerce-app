@@ -1,4 +1,4 @@
-package com.springjwt.entities;
+package sn.esmt.eapplication.authserver.authserver.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

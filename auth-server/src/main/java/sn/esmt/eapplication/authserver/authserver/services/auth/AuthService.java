@@ -1,7 +1,8 @@
-package com.springjwt.services.auth;
+package sn.esmt.eapplication.authserver.authserver.services.auth;
 
-import com.springjwt.dto.SignupDTO;
-import com.springjwt.dto.UserDTO;
+
+import sn.esmt.eapplication.authserver.authserver.dto.SignupDTO;
+import sn.esmt.eapplication.authserver.authserver.dto.UserDTO;
 
 public interface AuthService {
     UserDTO createUser(SignupDTO signupDTO);

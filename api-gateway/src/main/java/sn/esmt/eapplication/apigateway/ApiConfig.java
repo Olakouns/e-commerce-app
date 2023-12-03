@@ -28,6 +28,12 @@ public class ApiConfig {
                 .route("auth-server", r -> r
                         .path("/auth/**")
                         .uri("lb://auth-server"))
+                .route("order-microservice", r -> r
+                        .path("/api/order/**")
+                        .uri("lb://order-microservice"))
+                .route("user-microservice", r -> r
+                        .path("/api/users/**")
+                        .uri("lb://user-microservice"))
                 .build();
     }
 }

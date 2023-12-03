@@ -43,7 +43,8 @@ public class BaseServiceImpl implements BaseService {
 
     @Override
     public Mono<Page<ProductDTO>> getAllProductsPage(List<Integer> categoryIds, String searchKey, Double minPrice, Double maxPrice, int page, int size) {
-        return Mono.fromCallable(() -> productRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.asc("name")))).map(product -> modelMapper.map(product, ProductDTO.class)))
+        return Mono.fromCallable(() -> productRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Order.asc("name"))))
+                        .map(product -> modelMapper.map(product, ProductDTO.class)))
                 .subscribeOn(elasticScheduler);
     }
 

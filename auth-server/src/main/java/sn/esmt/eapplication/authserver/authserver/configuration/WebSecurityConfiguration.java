@@ -1,7 +1,8 @@
-package com.springjwt.configuration;
+package sn.esmt.eapplication.authserver.authserver.configuration;
 
-import com.springjwt.filters.JwtRequestFilter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,10 +15,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+import sn.esmt.eapplication.authserver.authserver.filters.JwtRequestFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Slf4j
 public class WebSecurityConfiguration {
 
     @Autowired
@@ -27,7 +33,7 @@ public class WebSecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/authenticate", "/sign-up").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/**")
                 .authenticated().and()
@@ -48,4 +54,16 @@ public class WebSecurityConfiguration {
         return config.getAuthenticationManager();
     }
 
+
+    @Bean
+    @LoadBalanced
+    public WebClient.Builder loadBalancedWebClientBuilder() {
+        return WebClient.builder();
+    }
+
+    @Bean
+    public Scheduler jdbcScheduler() {
+        log.info("Creates a jdbcScheduler with thread pool size = {}", 10);
+        return Schedulers.newBoundedElastic(10, 100, "jdbc-pool");
+    }
 }
