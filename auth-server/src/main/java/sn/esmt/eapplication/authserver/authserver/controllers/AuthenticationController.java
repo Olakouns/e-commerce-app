@@ -8,18 +8,18 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.web.bind.annotation.*;
 import sn.esmt.eapplication.authserver.authserver.dto.AuthenticationDTO;
 import sn.esmt.eapplication.authserver.authserver.dto.AuthenticationResponse;
 import sn.esmt.eapplication.authserver.authserver.services.jwt.UserDetailsServiceImpl;
 import sn.esmt.eapplication.authserver.authserver.util.JwtUtil;
 
 import java.io.IOException;
+
 
 @RestController
 @RequestMapping("/auth")
@@ -51,6 +51,17 @@ public class AuthenticationController {
 
         return new AuthenticationResponse(jwt);
 
+    }
+
+    @GetMapping("/validate")
+    public boolean validateToken(@RequestParam String token) {
+        try {
+            String username = jwtUtil.extractUsername(token);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            return jwtUtil.validateToken(token, userDetails);
+        } catch (Exception ignored) {
+        }
+        return false;
     }
 
 }
