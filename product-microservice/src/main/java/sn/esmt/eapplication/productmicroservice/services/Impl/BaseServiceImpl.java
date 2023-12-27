@@ -56,17 +56,18 @@ public class BaseServiceImpl implements BaseService {
     }
 
     @Override
-    public ProductDTO getProductById(Long productId) {
+    public Mono<ProductDTO> getProductById(Long productId) {
+        return Mono.fromCallable(() -> productRepository.findById(productId).map(product -> modelMapper.map(product, ProductDTO.class)).orElse(null))
+                .subscribeOn(elasticScheduler);
+    }
+
+    @Override
+    public Mono<Boolean> checkIfProductIsInStock(Long productId) {
         return null;
     }
 
     @Override
-    public boolean checkIfProductIsInStock(Long productId) {
-        return false;
-    }
-
-    @Override
-    public List<Boolean> checkIfProductsAreInStock(List<Long> productId) {
+    public Flux<Boolean> checkIfProductsAreInStock(List<Long> productId) {
         return null;
     }
 }

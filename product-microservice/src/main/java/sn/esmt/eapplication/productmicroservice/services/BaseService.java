@@ -15,8 +15,8 @@ public interface BaseService {
 
     Flux<CategoryDTO> getAllCategories();
 
-    ProductDTO getProductById(Long productId);
+    Mono<ProductDTO> getProductById(Long productId);
 
-    boolean checkIfProductIsInStock(Long productId);
-    List<Boolean> checkIfProductsAreInStock(List<Long> productId);
+    Mono<Boolean> checkIfProductIsInStock(Long productId);
+    Flux<Boolean> checkIfProductsAreInStock(List<Long> productId);
 }
