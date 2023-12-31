@@ -28,6 +28,7 @@ public class UserServiceImpl implements UserService {
                     .email(userDto.getEmail())
                     .name(userDto.getName())
                     .username(userDto.getUsername())
+                    .id(userDto.getUserId())
                     .build();
 
             Customer customer = Customer.builder()

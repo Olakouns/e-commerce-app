@@ -10,13 +10,19 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
+import sn.esmt.eapplication.productmicroservice.dto.ApiResponse;
 import sn.esmt.eapplication.productmicroservice.dto.CategoryDTO;
 import sn.esmt.eapplication.productmicroservice.dto.ProductDTO;
+import sn.esmt.eapplication.productmicroservice.dto.ProductsAvailableDTO;
+import sn.esmt.eapplication.productmicroservice.entities.Product;
+import sn.esmt.eapplication.productmicroservice.entities.Stock;
+import sn.esmt.eapplication.productmicroservice.exceptions.ResourceNotFoundException;
 import sn.esmt.eapplication.productmicroservice.repositories.CategoryRepository;
 import sn.esmt.eapplication.productmicroservice.repositories.ProductRepository;
 import sn.esmt.eapplication.productmicroservice.repositories.StockRepository;
 import sn.esmt.eapplication.productmicroservice.services.BaseService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,5 +76,26 @@ public class BaseServiceImpl implements BaseService {
     @Override
     public Flux<Boolean> checkIfProductsAreInStock(List<Long> productId) {
         return null;
+    }
+
+    @Override
+    public Mono<ApiResponse> checkProductsAvailability(List<ProductsAvailableDTO> productsAvailableDTOS) {
+        return Mono.fromCallable(() -> {
+            ApiResponse apiResponse = new ApiResponse();
+            apiResponse.setSuccess(true);
+            List<String> messages = new ArrayList<>();
+            for (ProductsAvailableDTO productsAvailableDTO : productsAvailableDTOS) {
+                // GET PRODUCT STOCK
+                Product product = productRepository.findById(productsAvailableDTO.getProductId()).orElseThrow(()-> new ResourceNotFoundException("Product", "id", productsAvailableDTO.getProductId()));
+                Stock stock = stockRepository.findByProductId(product.getId()).orElseThrow(()-> new ResourceNotFoundException("Stock", "product", product.getId()));
+
+                if (stock.getQuantityInEnStock() < productsAvailableDTO.getQuantity()) {
+                    apiResponse.setSuccess(false);
+                    messages.add("Product " + product.getName() + " is not available in stock");
+                }
+            }
+            apiResponse.setMessages(messages);
+            return apiResponse;
+        }).subscribeOn(elasticScheduler);
     }
 }

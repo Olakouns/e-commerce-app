@@ -3,8 +3,10 @@ package sn.esmt.eapplication.productmicroservice.services;
 import org.springframework.data.domain.Page;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import sn.esmt.eapplication.productmicroservice.dto.ApiResponse;
 import sn.esmt.eapplication.productmicroservice.dto.CategoryDTO;
 import sn.esmt.eapplication.productmicroservice.dto.ProductDTO;
+import sn.esmt.eapplication.productmicroservice.dto.ProductsAvailableDTO;
 
 import java.util.List;
 
@@ -19,4 +21,6 @@ public interface BaseService {
 
     Mono<Boolean> checkIfProductIsInStock(Long productId);
     Flux<Boolean> checkIfProductsAreInStock(List<Long> productId);
+
+    Mono<ApiResponse> checkProductsAvailability(List<ProductsAvailableDTO> productsAvailableDTO);
 }

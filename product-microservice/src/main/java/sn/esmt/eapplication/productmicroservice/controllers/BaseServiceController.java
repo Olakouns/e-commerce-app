@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import sn.esmt.eapplication.productmicroservice.dto.ApiResponse;
 import sn.esmt.eapplication.productmicroservice.dto.CategoryDTO;
 import sn.esmt.eapplication.productmicroservice.dto.ProductDTO;
+import sn.esmt.eapplication.productmicroservice.dto.ProductsAvailableDTO;
 import sn.esmt.eapplication.productmicroservice.services.BaseService;
 
 import java.util.ArrayList;
@@ -52,6 +54,11 @@ public class BaseServiceController {
     @GetMapping("product/{productId}")
     public Mono<ProductDTO> getProductById(@PathVariable Long productId) {
         return baseService.getProductById(productId);
+    }
+
+    @PostMapping("stock/checkAvailability")
+    public Mono<ApiResponse> checkAvailability(@RequestBody List<ProductsAvailableDTO> productsAvailableDTOS) {
+        return baseService.checkProductsAvailability(productsAvailableDTOS);
     }
 
 }

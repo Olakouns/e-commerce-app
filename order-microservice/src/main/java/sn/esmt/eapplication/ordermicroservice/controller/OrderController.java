@@ -2,11 +2,12 @@ package sn.esmt.eapplication.ordermicroservice.controller;
 
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Mono;
 import sn.esmt.eapplication.ordermicroservice.dto.ApiResponse;
+import sn.esmt.eapplication.ordermicroservice.dto.OrdersDto;
 import sn.esmt.eapplication.ordermicroservice.services.OrderService;
 
 @RestController
@@ -17,8 +18,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/create")
-//    public Mono<ApiResponse> createOrder(String customerId, OrdersDto ordersDto) {
-    public Mono<ApiResponse> createOrder() {
-        return this.orderService.createOrder("customerId", null);
+    public Mono<ResponseEntity<ApiResponse>> createOrder(@RequestParam String customerId, @RequestBody OrdersDto ordersDto) {
+        return this.orderService.createOrder(customerId, ordersDto);
     }
 }

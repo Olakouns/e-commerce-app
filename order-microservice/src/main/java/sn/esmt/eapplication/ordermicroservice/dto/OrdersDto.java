@@ -20,7 +20,7 @@ import java.util.List;
 @Builder
 public class OrdersDto {
     @NotBlank(message = "customerId is required")
-    private String customerId;
+    private long customerId;
     private double totalAmount;
     @NotEmpty(message = "orderItems is required")
     @Valid
@@ -29,17 +29,3 @@ public class OrdersDto {
     private OrderStatus orderStatus;
 }
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-class OrderItemDTO {
-    @NotBlank(message = "productId is required")
-    private String productId;
-    private String productName;
-    @NotBlank(message = "quantity is required")
-    @Positive(message = "quantity must be greater than 0")
-    private int quantity;
-    private double unitPrice;
-    private double subTotal;
-}

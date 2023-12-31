@@ -7,14 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductDTO {
-    private Long id;
-
-    private String name;
-    private String description;
-    private double price;
-//    private double quantityInStock;
+@Builder
+public class ProductsAvailableDTO {
+    private long productId;
+    private int quantity;
 }

@@ -23,23 +23,22 @@ public class AsyncUser {
     @Async
     @CircuitBreaker(name = "CircuitBreakerService", fallbackMethod = "fallback")
     public void createUserInUserMicroService(UserDTO userDTO) {
-        try {
-            UserDTOMicro userDTOMicro = UserDTOMicro.builder()
-                    .name(userDTO.getName())
-                    .email(userDTO.getEmail())
-                    .build();
-            // Make the POST request to the user microservice
-            UserDTOMicro response = webClientBuilder
-                    .build()
-                    .post()
-                    .uri("http://user-microservice/api/users/create")
-                    .bodyValue(userDTOMicro)
-                    .retrieve()
-                    .bodyToMono(UserDTOMicro.class)
-                    .block();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        UserDTOMicro userDTOMicro = UserDTOMicro.builder()
+                .name(userDTO.getName())
+                .email(userDTO.getEmail())
+                .userId(userDTO.getId())
+                .build();
+
+
+        // Make the POST request to the user microservice
+        UserDTOMicro response = webClientBuilder
+                .build()
+                .post()
+                .uri("http://user-microservice/api/users/create")
+                .bodyValue(userDTOMicro)
+                .retrieve()
+                .bodyToMono(UserDTOMicro.class)
+                .block();
     }
 
     private void fallback(UserDTO userDTO, Exception e) {
