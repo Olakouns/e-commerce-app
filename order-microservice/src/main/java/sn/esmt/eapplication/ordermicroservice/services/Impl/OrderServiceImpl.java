@@ -22,9 +22,13 @@ import sn.esmt.eapplication.ordermicroservice.dto.OrderItemDTO;
 import sn.esmt.eapplication.ordermicroservice.dto.OrdersDto;
 import sn.esmt.eapplication.ordermicroservice.entities.Customer;
 import sn.esmt.eapplication.ordermicroservice.entities.Order;
+import sn.esmt.eapplication.ordermicroservice.entities.OrderItem;
+import sn.esmt.eapplication.ordermicroservice.entities.enums.OrderStatus;
 import sn.esmt.eapplication.ordermicroservice.repositories.OrderRepository;
 import sn.esmt.eapplication.ordermicroservice.services.OrderService;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -77,15 +81,34 @@ public class OrderServiceImpl implements OrderService {
                     Customer customer1 = objects.getT1();
                     ApiResponse apiResponse = objects.getT2();
 
-                    if (!apiResponse.isSuccess()){
+                    if (!apiResponse.isSuccess()) {
                         return Mono.just(new ResponseEntity<>(apiResponse, HttpStatus.NOT_ACCEPTABLE));
                     }
 
-                    // TODO: 11/26/2023 CALCULATE SUB_TOTAL FOR EACH ORDER_ITEM
 
-                    // TODO: 11/26/2023 CALCULATE TOTAL_AMOUNT FOR ORDER
+                    Order order = new Order();
+                    order.setCustomer(customer1);
+                    order.setOrderDate(new Date());
+                    order.setOrderStatus(OrderStatus.NEW);
+                    order.setPaymentMethod(ordersDto.getPaymentMethod());
 
-                    // TODO: 11/26/2023 SAVE ORDER IN MONGODB
+                    List<OrderItem> orderItems = new ArrayList<>();
+
+                    for (OrderItemDTO orderItem : ordersDto.getOrderItems()) {
+                        OrderItem orderItem1 = OrderItem.builder()
+                                .productName(orderItem.getProductName())
+                                .productId(orderItem.getProductId())
+                                .quantity(orderItem.getQuantity())
+                                .unitPrice(orderItem.getUnitPrice())
+                                .subTotal(orderItem.getUnitPrice() * orderItem.getQuantity())
+                                .build();
+                        orderItems.add(orderItem1);
+                    }
+
+                    order.setOrderItems(orderItems);
+                    orderRepository.save(order);
+
+                    // TODO: 1/2/2024 UPDATE PRODUCT STOCK
 
                     System.out.println(customer1);
                     System.out.println(apiResponse);

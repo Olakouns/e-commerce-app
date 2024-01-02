@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class OrderItem {
-    private String productId;
+    private long productId;
     private String productName;
     private int quantity;
     private double unitPrice;
